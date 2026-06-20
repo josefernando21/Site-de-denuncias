@@ -6,13 +6,19 @@ const cors = require('cors');
 
 const app = express();
 
+console.log('📍 Diretório de trabalho (__dirname):', __dirname);
+console.log('📍 Diretório do processo (process.cwd()):', process.cwd());
+
 app.use(cors());
 app.use(express.json({ limit: '50kb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Garantir que GET / sempre entregue o frontend (evita problemas no deploy)
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  const indexPath = path.join(__dirname, 'public', 'index.html');
+  console.log('📄 Servindo index.html de:', indexPath);
+  console.log('📄 Arquivo existe?', fs.existsSync(indexPath));
+  res.sendFile(indexPath);
 });
 
 
