@@ -38,8 +38,22 @@ Payload (exemplo):
 }
 ```
 
-## Observação importante sobre “enviar para outras pessoas”
-Para outras pessoas verem e salvarem denúncias, você precisa hospedar o projeto em um servidor (deploy) que mantenha o backend rodando.
+## Deploy no Render (para enviar para outras pessoas)
 
-Persistência em arquivo (`denuncias.json`) funciona bem em hospedagens que mantêm armazenamento do projeto.
+### 1) Enviar o repositório
+Faça push do projeto para um repositório Git (GitHub/GitLab).
+
+### 2) Criar Web Service no Render
+- Framework/Runtime: **Node**
+- Build Command: (padrão) `npm install`
+- Start Command: `npm start`
+- Instance/Port: o Render define a porta automaticamente via variável de ambiente **`PORT`** (seu `server.js` já usa `process.env.PORT`).
+
+### 3) Como testar
+- Abra a URL do serviço renderizada no browser (carrega o front em `public/`).
+- Use o formulário para enviar uma denúncia.
+- A API grava em `database/denuncias.json` dentro do ambiente do container.
+
+### Observação sobre persistência
+Este projeto salva em arquivo (`database/denuncias.json`). Em alguns planos/reescalonamentos do Render, o filesystem pode ser recriado; nesse caso o arquivo pode voltar ao estado inicial. Para persistência “garantida” entre deploys/instâncias, seria necessário migrar para banco externo (ex: Postgres).
 

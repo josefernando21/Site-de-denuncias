@@ -14,5 +14,17 @@
     "contato": "x@y.com",
     "descricao": "teste 1234567890",
     "createdAt": "2026-06-20T01:37:52.434Z"
+  },
+  {
+    "id": 3,
+    "tipo": "Outros",
+    "nome": "Test",
+    "contato": "test@x.com",
+    "empresa": "e",
+    "local": "l",
+    "vitima": "v",
+    "descricao": "descrição válida aqui",
+    "detalhes": "d",
+    "createdAt": "2026-06-20T02:11:33.882Z"
   }
 ]

@@ -3,11 +3,18 @@ const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 
+
 const app = express();
 
 app.use(cors());
 app.use(express.json({ limit: '50kb' }));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Garantir que GET / sempre entregue o frontend (evita problemas no deploy)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 
 
 // ========== CONFIGURAÇÃO DO BANCO DE DADOS (JSON) ==========
@@ -66,8 +73,10 @@ app.post('/api/denuncias', (req, res) => {
       descricao,
       detalhes,
       local,
-
+      empresa,
+      vitima
     } = req.body || {};
+
 
     if (!tipo || typeof tipo !== 'string' || tipo.trim() === '') {
 
@@ -113,8 +122,8 @@ app.post('/api/denuncias', (req, res) => {
 
 // ========== INICIAR SERVIDOR ==========
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Servidor rodando em http://0.0.0.0:${PORT}`);
   console.log('📝 Abra seu navegador e acesse!');
 });
 
