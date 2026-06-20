@@ -120,6 +120,14 @@ app.post('/api/denuncias', (req, res) => {
   }
 });
 
+// Fallback para SPA - qualquer rota não-API retorna index.html
+app.use((req, res) => {
+  if (!req.path.startsWith('/api/')) {
+    return res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  }
+  res.status(404).json({ error: 'Rota não encontrada' });
+});
+
 // ========== INICIAR SERVIDOR ==========
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
