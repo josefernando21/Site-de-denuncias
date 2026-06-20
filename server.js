@@ -9,16 +9,38 @@ const app = express();
 console.log('📍 Diretório de trabalho (__dirname):', __dirname);
 console.log('📍 Diretório do processo (process.cwd()):', process.cwd());
 
+// Tentar encontrar a pasta public em múltiplos caminhos
+let publicPath = path.join(__dirname, 'public');
+if (!fs.existsSync(publicPath)) {
+  console.warn('⚠️  Pasta public não encontrada em:', publicPath);
+  // Tentar um nível acima
+  publicPath = path.join(__dirname, '..', 'public');
+  if (fs.existsSync(publicPath)) {
+    console.log('✅ Encontrada pasta public em:', publicPath);
+  } else {
+    console.warn('⚠️  Pasta public também não encontrada em:', publicPath);
+    publicPath = path.join(__dirname, 'public');
+  }
+}
+
+console.log('📂 Usando pasta public:', publicPath);
+
 app.use(cors());
 app.use(express.json({ limit: '50kb' }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(publicPath));
 
 // Garantir que GET / sempre entregue o frontend (evita problemas no deploy)
 app.get('/', (req, res) => {
-  const indexPath = path.join(__dirname, 'public', 'index.html');
+  const indexPath = path.join(publicPath, 'index.html');
   console.log('📄 Servindo index.html de:', indexPath);
   console.log('📄 Arquivo existe?', fs.existsSync(indexPath));
-  res.sendFile(indexPath);
+  
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    console.error('❌ Arquivo não encontrado:', indexPath);
+    res.status(404).send('<h1>index.html não encontrado</h1><p>Procurando em: ' + indexPath + '</p>');
+  }
 });
 
 
@@ -129,7 +151,11 @@ app.post('/api/denuncias', (req, res) => {
 // Fallback para SPA - qualquer rota não-API retorna index.html
 app.use((req, res) => {
   if (!req.path.startsWith('/api/')) {
-    return res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    const indexPath = path.join(publicPath, 'index.html');
+    if (fs.existsSync(indexPath)) {
+      return res.sendFile(indexPath);
+    }
+    return res.status(404).send('<h1>index.html não encontrado</h1><p>Procurando em: ' + indexPath + '</p>');
   }
   res.status(404).json({ error: 'Rota não encontrada' });
 });
@@ -139,6 +165,15 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Servidor rodando em http://0.0.0.0:${PORT}`);
   console.log('📝 Abra seu navegador e acesse!');
+  
+  // Listar arquivos para debug
+  console.log('\n📋 Arquivos em', publicPath + ':');
+  try {
+    const files = fs.readdirSync(publicPath);
+    files.forEach(f => console.log('  -', f));
+  } catch (err) {
+    console.error('  Erro ao listar arquivos:', err.message);
+  }
 });
 
 
