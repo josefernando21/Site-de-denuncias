@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Denúncias de Condutas Abusivas</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="topbar">
+        <div class="brand">
+          <h1>🛡️ Denunciar Condutas Abusivas</h1>
+          <p class="subtitle">
+            Use este formulário para registrar denúncias sobre comportamentos abusivos em empresas e organizações.
+            Os dados são salvos neste servidor e ficam disponíveis para visualização aqui na página.
+          </p>
+        </div>
+        <div class="pills" aria-label="Informações">
+          <div class="pill">Dados salvos em <kbd>database/denuncias.json</kbd></div>
+          <div class="pill">API: <kbd>/api/denuncias</kbd></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Enviar denúncia</h2>
+        <div class="hint">Campos básicos + informações adicionais (opcionais). Se quiser, informe contato para acompanhamento.</div>
+
+        <form id="form" class="form" autocomplete="off">
+          <div>
+            <label class="label" for="tipo">Tipo de denúncia</label>
+            <select id="tipo" required>
+              <option value="">Selecione...</option>
+              <option>Assédio</option>
+              <option>Difamação</option>
+              <option>Racismo</option>
+              <option>Discriminação</option>
+              <option>Violência</option>
+              <option>Fraude</option>
+              <option>Outros</option>
+            </select>
+          </div>
+
+          <div class="row2">
+            <div>
+              <label class="label" for="empresa">Empresa (opcional)</label>
+              <input id="empresa" type="text" placeholder="Nome da empresa" />
+            </div>
+            <div>
+              <label class="label" for="local">Local/Unidade (opcional)</label>
+              <input id="local" type="text" placeholder="Cidade, setor, unidade" />
+            </div>
+          </div>
+
+          <div class="row2">
+            <div>
+              <label class="label" for="vitima">Vítima/Parte envolvida (opcional)</label>
+              <input id="vitima" type="text" placeholder="Como identificar (se necessário)" />
+            </div>
+            <div>
+              <label class="label" for="nome">Seu nome/identificação (opcional)</label>
+              <input id="nome" type="text" placeholder="Como você quer ser identificado" />
+            </div>
+          </div>
+
+          <div>
+            <label class="label" for="contato">Contato (opcional)</label>
+            <input id="contato" type="text" placeholder="E-mail ou outro meio" />
+          </div>
+
+          <div>
+            <label class="label" for="descricao">Resumo do ocorrido (obrigatório)</label>
+            <textarea id="descricao" rows="6" required minlength="10" placeholder="Descreva com o máximo de detalhes possível..." ></textarea>
+          </div>
+
+          <div>
+            <label class="label" for="detalhes">Detalhes adicionais (opcional)</label>
+            <textarea id="detalhes" rows="4" placeholder="Datas aproximadas, testemunhas, como ocorreu, contexto..." ></textarea>
+          </div>
+
+          <button class="btn" type="submit">Enviar denúncia</button>
+          <div id="mensagem" class="message" role="status" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <aside class="card">
+        <h2>Últimas denúncias</h2>
+        <div class="hint">Mostra as mais recentes cadastradas neste servidor.</div>
+        <div id="lista" class="list"></div>
+      </aside>
+    </div>
+
+    <div class="footer">
+      <strong>Importante:</strong> este site é uma base simples. Para casos graves, procure autoridades competentes.
+      Os registros permanecem no arquivo do servidor e dependem de como você está hospedando.
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+

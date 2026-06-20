@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "tipo": "Difamação",
+    "nome": "jose fernanod",
+    "contato": "nojsoe",
+    "descricao": "fui abuasdo",
+    "createdAt": "2026-06-20T01:16:51.041Z"
+  },
+  {
+    "id": 2,
+    "tipo": "Outros",
+    "nome": "Anon",
+    "contato": "x@y.com",
+    "descricao": "teste 1234567890",
+    "createdAt": "2026-06-20T01:37:52.434Z"
+  }
+]
